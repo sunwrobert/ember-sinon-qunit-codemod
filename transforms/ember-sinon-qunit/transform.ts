@@ -74,13 +74,6 @@ const transform: Transform = (fileInfo, api) => {
           )
         );
 
-      // addLastImportHelper(
-      j.importDeclaration(
-        [j.importDefaultSpecifier(j.identifier('setupSinon'))],
-        j.literal('ember-sinon-qunit')
-        // )
-      );
-
       const setupSinonSandbox = root.find(j.Identifier, {
         name: 'setupSinonSandbox'
       });
@@ -126,8 +119,6 @@ const transform: Transform = (fileInfo, api) => {
       } else {
         root.get().node.program.body.unshift(sinonImport);
       }
-
-      // addLastImportHelper(sinonImport);
     }
 
     sandboxNodes.replaceWith(j.identifier('sinon'));
