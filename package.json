@@ -1,0 +1,38 @@
+{
+  "name": "ember-sinon-qunit-codemod",
+  "version": "1.0.0",
+  "description": "A codemod for migrating to ember-sinon-qunit V4",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "homepage": "https://github.com/sunwrobert/ember-sinon-qunit-codemod",
+  "author": "Robert Sun",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "@babel/preset-typescript": "^7.8.3",
+    "@types/jest": "^24.9.0",
+    "@types/jscodeshift": "^0.6.3",
+    "@types/node": "^13.1.7",
+    "@typescript-eslint/eslint-plugin": "^2.16.0",
+    "@typescript-eslint/parser": "^2.16.0",
+    "babel-jest": "^24.9.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-jest": "^23.6.0",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "typescript": "^3.7.4"
+  },
+  "dependencies": {
+    "codemod-cli": "^2.1.0",
+    "jscodeshift": "^0.7.0"
+  },
+  "bin": {
+    "ember-sinon-qunit-codemod": "./bin/cli.js"
+  }
+}
