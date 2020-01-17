@@ -8,3 +8,4 @@ defineTest(__dirname, 'transform', {}, 'sample-test-without-create-sandbox');
 defineTest(__dirname, 'transform', {}, 'test-helper-without-sandbox');
 defineTest(__dirname, 'transform', {}, 'test-helper-with-sandbox');
 defineTest(__dirname, 'transform', {}, 'sample-test-util');
+defineTest(__dirname, 'transform', {}, 'sample-test-with-old-sinon-qunit');

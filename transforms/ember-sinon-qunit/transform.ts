@@ -16,6 +16,19 @@ const transform: Transform = (fileInfo, api) => {
       .remove();
   };
 
+  const convertTestMethod = () => {
+    root
+      .find(j.ImportDeclaration, {
+        source: { value: 'ember-sinon-qunit/test-support/test' }
+      })
+      .replaceWith(p =>
+        j.importDeclaration(
+          [j.importSpecifier(j.identifier('test'), j.identifier('test'))],
+          j.literal('qunit')
+        )
+      );
+  };
+
   const removeCreateSandbox = () => {
     root
       .find(j.AssignmentExpression, {
@@ -146,6 +159,7 @@ const transform: Transform = (fileInfo, api) => {
   removeDeprecatedImports();
   removeCreateSandbox();
   removeSinonSinoff();
+  convertTestMethod();
   setupSinonTestHelper();
   convertThisSandboxToSinon();
   removeSinonRestore();
