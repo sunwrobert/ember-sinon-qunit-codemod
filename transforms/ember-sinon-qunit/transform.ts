@@ -112,10 +112,14 @@ const transform: Transform = (fileInfo, api) => {
       property: { name: 'sandbox' }
     });
 
+    const sandboxRefNodes = root.find(j.Identifier, { name: 'sandbox' });
+
     // If we're using sandboxes and we don't already have a sinon import, import it.
     if (
-      thisSandboxNodes.length > 0 &&
-      !root.find(j.ImportDefaultSpecifier, { local: { name: 'sinon' } }).length
+      thisSandboxNodes.length > 0 ||
+      (sandboxRefNodes.length > 0 &&
+        !root.find(j.ImportDefaultSpecifier, { local: { name: 'sinon' } })
+          .length)
     ) {
       const existingImports = root.find(j.ImportDeclaration);
       const sinonImport = j.importDeclaration(
@@ -134,12 +138,8 @@ const transform: Transform = (fileInfo, api) => {
     }
 
     thisSandboxNodes.replaceWith(j.identifier('sinon'));
-
+    sandboxRefNodes.replaceWith(j.identifier('sinon'));
     root.findVariableDeclarators('sandbox').remove();
-
-    root
-      .find(j.Identifier, { name: 'sandbox' })
-      .replaceWith(j.identifier('sinon'));
   };
 
   const removeSinonRestore = () => {
