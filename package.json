@@ -1,6 +1,6 @@
 {
   "name": "ember-sinon-qunit-codemod",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A codemod for migrating to ember-sinon-qunit V4",
   "main": "index.js",
   "scripts": {

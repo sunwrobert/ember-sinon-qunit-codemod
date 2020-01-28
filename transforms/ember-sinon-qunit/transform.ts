@@ -68,8 +68,13 @@ const transform: Transform = (fileInfo, api) => {
         p.specifiers.find(specifier => specifier.local.name === 'start')
     ).length;
 
-    // If we're in the test helper, setupSinon
-    if (isTestHelper) {
+    // If we're in the test helper and we dont already have setupSinon
+    if (
+      isTestHelper &&
+      !root.find(j.ImportDeclaration, p =>
+        p.specifiers.find(specifier => specifier.local.name === 'setupSinon')
+      ).length
+    ) {
       root
         .find(j.ImportDeclaration)
         .at(-1)
@@ -101,15 +106,15 @@ const transform: Transform = (fileInfo, api) => {
     }
   };
 
-  const convertThisSandboxToSinon = () => {
-    const sandboxNodes = root.find(j.MemberExpression, {
+  const convertSandboxToSinon = () => {
+    const thisSandboxNodes = root.find(j.MemberExpression, {
       object: { type: 'ThisExpression' },
       property: { name: 'sandbox' }
     });
 
     // If we're using sandboxes and we don't already have a sinon import, import it.
     if (
-      sandboxNodes.length > 0 &&
+      thisSandboxNodes.length > 0 &&
       !root.find(j.ImportDefaultSpecifier, { local: { name: 'sinon' } }).length
     ) {
       const existingImports = root.find(j.ImportDeclaration);
@@ -128,7 +133,13 @@ const transform: Transform = (fileInfo, api) => {
       }
     }
 
-    sandboxNodes.replaceWith(j.identifier('sinon'));
+    thisSandboxNodes.replaceWith(j.identifier('sinon'));
+
+    root.findVariableDeclarators('sandbox').remove();
+
+    root
+      .find(j.Identifier, { name: 'sandbox' })
+      .replaceWith(j.identifier('sinon'));
   };
 
   const removeSinonRestore = () => {
@@ -160,7 +171,7 @@ const transform: Transform = (fileInfo, api) => {
   removeSinonSinoff();
   convertTestMethod();
   setupSinonTestHelper();
-  convertThisSandboxToSinon();
+  convertSandboxToSinon();
   removeSinonRestore();
 
   return root.toSource({ quote: 'single' });
