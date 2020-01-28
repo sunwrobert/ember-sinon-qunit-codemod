@@ -11,7 +11,8 @@ const transform: Transform = (fileInfo, api) => {
         p =>
           p.source.value ===
             'ember-sinon-sandbox/test-support/setup-global-sinon-sandbox' ||
-          p.source.value === 'ember-sinon-sinoff/test-support'
+          p.source.value === 'ember-sinon-sinoff/test-support' ||
+          p.source.value === 'ember-sinon-sandbox/test-support'
       )
       .remove();
   };
@@ -39,6 +40,12 @@ const transform: Transform = (fileInfo, api) => {
           }
         }
       })
+      .remove();
+  };
+
+  const removeSetupSinonSandbox = () => {
+    root
+      .find(j.CallExpression, { callee: { name: 'setupSinonSandbox' } })
       .remove();
   };
 
@@ -149,6 +156,7 @@ const transform: Transform = (fileInfo, api) => {
 
   removeDeprecatedImports();
   removeCreateSandbox();
+  removeSetupSinonSandbox();
   removeSinonSinoff();
   convertTestMethod();
   setupSinonTestHelper();
